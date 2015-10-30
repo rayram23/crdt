@@ -10,7 +10,8 @@ import (
 
 func main() {
 	fmt.Print("Hello World\n")
-	set := &AddOnlyImpl{}
+	vals := make(map[string]int)
+	set := &AddOnlyImpl{vals}
 	rpc.Register(set)
 	rpc.HandleHTTP()
 	l, e := net.Listen("tcp", ":1234")
@@ -23,17 +24,20 @@ func main() {
 }
 
 type AddOnlyImpl struct {
-	vals map[interface{}]int
+	vals map[string]int
 }
 
 var _ s.AddOnlySet = &AddOnlyImpl{}
 
-func (a *AddOnlyImpl) Add(v interface{}, r *s.Result) error {
-	a.vals[v]++
+func (a *AddOnlyImpl) Add(s string, r *s.Result) error {
+	a.vals[s]++
 	fmt.Print("Added\n")
+	for k := range a.vals {
+		fmt.Printf("key %s %d\n", k, a.vals[k])
+	}
 	return nil
 }
-func (a *AddOnlyImpl) Show(v interface{}, r *s.Result) error {
+func (a *AddOnlyImpl) Show(s string, r *s.Result) error {
 	var keys []interface{}
 	for k := range a.vals {
 		keys = append(keys, k)

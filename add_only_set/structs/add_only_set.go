@@ -1,6 +1,6 @@
 package structs
 
 type AddOnlySet interface {
-	Add(v interface{}, r *Result) error
-	Show(v interface{}, r *Result) error
+	Add(v string, r *Result) error
+	Show(v string, r *Result) error
 }
