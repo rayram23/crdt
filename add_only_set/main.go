@@ -18,21 +18,26 @@ func main() {
 		fmt.Printf("Error %s")
 		return
 	}
-	go http.Serve(l, nil)
+	http.Serve(l, nil)
 
 }
 
 type AddOnlyImpl struct {
-	vals map[interface{}]interface{}
+	vals map[interface{}]int
 }
 
 var _ s.AddOnlySet = &AddOnlyImpl{}
 
-func (a *AddOnlyImpl) Add(v interface{}, r *string) error {
-	fmt.Print("Got to add\n")
+func (a *AddOnlyImpl) Add(v interface{}, r *s.Result) error {
+	a.vals[v]++
+	fmt.Print("Added\n")
 	return nil
 }
-func (a *AddOnlyImpl) Show(v interface{}, r *[]interface{}) error {
-	fmt.Print("Got to show\n")
+func (a *AddOnlyImpl) Show(v interface{}, r *s.Result) error {
+	var keys []interface{}
+	for k := range a.vals {
+		keys = append(keys, k)
+	}
+	r.Data = keys
 	return nil
 }
