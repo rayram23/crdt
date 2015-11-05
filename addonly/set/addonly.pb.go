@@ -16,7 +16,7 @@ It has these top-level messages:
 	ContainsRequest
 	AllResponse
 */
-package addonly
+package set
 
 import proto "github.com/golang/protobuf/proto"
 import fmt "fmt"
