@@ -1,0 +1,34 @@
+syntax = "proto2";
+
+package addonly;
+
+service AddOnly {
+  rpc Add(AddRequest) returns (BooleanResponse) {}
+  rpc Size(BlankMessage) returns (IntResponse) {}
+  rpc Contains(ContainsRequest) returns (BooleanResponse) {}
+  rpc All(BlankMessage) returns (AllResponse) {}
+}
+
+message BlankMessage {
+  optional uint64 time = 1;
+}
+message AddRequest {
+  required string val = 1;
+}
+
+message BooleanResponse {
+  required bool resp = 1;
+}
+
+message IntResponse {
+  required uint64 resp = 1;
+}
+
+message ContainsRequest {
+  required string val = 1;
+}
+
+message AllResponse {
+  repeated string val = 1;
+}
+
