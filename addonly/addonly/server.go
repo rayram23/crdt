@@ -1,6 +1,7 @@
 package addonly
 
 import (
+	"fmt"
 	"golang.org/x/net/context"
 )
 
@@ -19,14 +20,17 @@ func NewServer() *Server {
 func (s *Server) Add(c context.Context, r *AddRequest) (*BooleanResponse, error) {
 	s.data[*r.Val] = struct{}{}
 	t := true
+	fmt.Printf("added: %s\n", *r.Val)
 	return &BooleanResponse{Resp: &t}, nil
 }
 func (s *Server) Size(c context.Context, b *BlankMessage) (*IntResponse, error) {
 	size := uint64(len(s.data))
+	fmt.Printf("returning size:  %d\n", size)
 	return &IntResponse{Resp: &size}, nil
 }
 func (s *Server) Contains(c context.Context, b *ContainsRequest) (*BooleanResponse, error) {
 	_, ok := s.data[*b.Val]
+	fmt.Printf("Contains :%s? %v\n", *b.Val, ok)
 	return &BooleanResponse{Resp: &ok}, nil
 }
 func (s *Server) All(c context.Context, b *BlankMessage) (*AllResponse, error) {
@@ -36,5 +40,6 @@ func (s *Server) All(c context.Context, b *BlankMessage) (*AllResponse, error) {
 		vals[i] = k
 		i++
 	}
+	fmt.Print("returned all\n")
 	return &AllResponse{Val: vals}, nil
 }
