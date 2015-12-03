@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+package crdt;
+
+// ReplicationTransport services defines methods for
+// querying and replication information within the cluster.
+service ReplicationTransport {
+	// Ping request results in a response that tells if further
+	// request/response can take place between the two nodes or not.
+	rpc Ping(PingRequest) returns (PingResult) {}
+
+	// Query issues a request that queries the peers current
+	// state to which it replies with the stream of query results.
+	rpc Query(QueryRequest) returns (stream QueryResult) {}
+}
+
+// PingRequest contains the id that uniquely marks this
+// request and the time this request was issued.
+message PingRequest {
+	int32 id = 1;
+	int64 timestamp = 2;
+}
+
+// PingResult contains the id of the response and the time
+// the reply was issued.
+message PingResult {
+	int32 id = 1;
+	int64 timestamp = 2;
+}
+
+// QueryRequest contains the id of source server and the query
+// reply as an array of bytes.
+message QueryRequest {
+	string server = 1;
+	bytes query = 2;
+}
+
+// QueryResult returns the result in form of an array of bytes.
+message QueryResult {
+	bytes result = 1;
+}
