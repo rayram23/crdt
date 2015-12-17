@@ -35,7 +35,9 @@ func main() {
 	crdt.RegisterReplicationTransportServer(grpcSrv, srv)
 
 	go func() {
-		pool, err := crdt.NewPeerPool(*peers, grpc.WithInsecure())
+		peersList := make([]string, 1)
+		peersList[0] = *peers
+		pool, err := crdt.NewPeerPool(peersList, grpc.WithInsecure())
 		if err != nil {
 			log.Printf("cannot create peerpool:", err)
 			return
